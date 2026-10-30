@@ -1,0 +1,75 @@
+{
+  "order": [
+    2,
+    1,
+    2
+  ],
+  "use_calendar_exog": true,
+  "imputation": "pchip",
+  "future_holidays": [],
+  "validation": {
+    "source": "broiler_price_time_series.ipynb, walk-forward CV",
+    "n_origins": 45,
+    "walk_forward": [
+      {
+        "horizon": "Next day",
+        "MAE (Rs/kg)": 10.68,
+        "RMSE": 16.63,
+        "MAPE %": 1.44,
+        "Accuracy % (100-MAPE)": 98.56,
+        "Better than naive %": 7.06,
+        "scored days": 19
+      },
+      {
+        "horizon": "Within 7 days",
+        "MAE (Rs/kg)": 26.18,
+        "RMSE": 33.6,
+        "MAPE %": 3.59,
+        "Accuracy % (100-MAPE)": 96.41,
+        "Better than naive %": 8.64,
+        "scored days": 152
+      },
+      {
+        "horizon": "Within 14 days",
+        "MAE (Rs/kg)": 35.04,
+        "RMSE": 44.79,
+        "MAPE %": 4.92,
+        "Accuracy % (100-MAPE)": 95.08,
+        "Better than naive %": 2.91,
+        "scored days": 308
+      }
+    ],
+    "extra_checks": [
+      {
+        "check": "Gain over naive, next day",
+        "result": "+0.8 Rs avg, model wins 58% of start dates",
+        "verdict": "not significant (p=0.41)"
+      },
+      {
+        "check": "Gain over naive, within 7 days",
+        "result": "+2.4 Rs avg, model wins 67% of start dates",
+        "verdict": "borderline-significant (Wilcoxon p=0.015, t-test p=0.07)"
+      },
+      {
+        "check": "80% range coverage (1\u20137 days)",
+        "result": "88% of real prices inside",
+        "verdict": "reliable, slightly wide"
+      },
+      {
+        "check": "95% range coverage (1\u20137 days)",
+        "result": "98% of real prices inside",
+        "verdict": "reliable, slightly wide"
+      },
+      {
+        "check": "Volatility clustering (ARCH-LM, posted days)",
+        "result": "p = 0.45",
+        "verdict": "none detected; GARCH not needed yet"
+      },
+      {
+        "check": "Weekly seasonality (STL strength)",
+        "result": "0.00",
+        "verdict": "no weekly cycle; weekday terms add little"
+      }
+    ]
+  }
+}
